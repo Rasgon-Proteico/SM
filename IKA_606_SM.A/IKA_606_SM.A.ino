@@ -1,3 +1,4 @@
+#include <Arduino.h>
 #define GO 13
 #define RDY A0
 
@@ -72,52 +73,52 @@ void loop() {
     if(medida> 0 && medida < 30){
       motores(150, HIGH, 150,  HIGH);
     } else { 
-      motores(0, HIGH, 0, HIGH);
+      motores(0, HIGH, 0, LOW);
     }
     delay(20);
     
     int izquierda = analogRead(SENSOR_IZQUIERDA) > 100 ? 1 : 0;
-    int centro = analogRead(SENSOR_CENTRO)> 100 ? 1 : 0;
+    int centro = analogRead(SENSOR_CENTRO)> 100 ? 1 : 0;          //Negro es 1
     int derecha = analogRead(SENSOR_DERECHA)> 100 ? 1 : 0;
     
-    Serial.println(" \t ");
-    Serial.print(izquierda); Serial.println(" | Izquierda: "); 
-    Serial.print(centro);    Serial.println(" | Centro: "); 
-    Serial.println(derecha); Serial.println(" | Derecha: "); 
+    Serial.println(" \t "); 
+    Serial.print(izquierda); Serial.println(" | Izquierda "); 
+    Serial.print(centro);    Serial.println(" | Centro "); 
+    Serial.print(derecha); Serial.println(" | Derecha "); 
     
     // Detectar línea 
     if (izquierda == 0 && centro == 0 && derecha == 0) {
-        Serial.println("Todos los sensores detectan BLANCO");
-    } 
-    
-    
-    else if (izquierda == 1 && centro == 1 && derecha == 1) {
         Serial.println("Todos los sensores detectan NEGRO");
     } 
     
     
-    else if (izquierda == 1 && centro == 0 && derecha == 1) {
-        Serial.println("Línea detectada en el CENTRO");
-        motores(150, HIGH, 150,  HIGH); //avanzar hacia enfrente 
-    } 
+     else if (izquierda == 1 && centro == 1 && derecha == 1) {
+        Serial.println("Todos los sensores detectan BLANCO");
+     } 
     
     
-    else if (izquierda == 0 && centro == 1 && derecha == 1) {
-        Serial.println("Línea detectada a la IZQUIERDA");
-        motores(100, LOW, 150, HIGH); // girrar a la izquierda
-    } 
+      else if (izquierda == 1 && centro == 0 && derecha == 1) {
+         Serial.println("Línea detectada en el CENTRO");
+         motores(150, LOW, 150,  LOW); //avanzar hacia atrás
+      } 
     
     
-    else if (izquierda == 1 && centro == 1 && derecha == 0) {
-        Serial.println("Línea detectada a la DERECHA");
-        motores(150, HIGH, 100, LOW); //girar a la derecha
-    } 
+       else if (izquierda == 0 && centro == 1 && derecha == 1) {
+          Serial.println("Línea detectada a la IZQUIERDA");
+          motores(100, LOW, 150, HIGH); // girrar a la izquierda
+       } 
     
     
-    else if(izquierda==0 && centro==1 && derecha ==0){
-      Serial.println("Línea detectada enfrente");
-      motores(150, LOW, 150, LOW); //retroceder
-    }
+        else if (izquierda == 1 && centro == 1 && derecha == 0) {
+           Serial.println("Línea detectada a la DERECHA");
+           motores(150, HIGH, 100, LOW); //girar a la derecha
+        } 
+    
+    
+         else if(izquierda==0 && centro==1 && derecha ==0){
+           Serial.println("Línea detectada enfrente");
+           motores(150, HIGH, 150, HIGH); //Avanzar hacia el frente
+         }
     
     delay(100);
     
