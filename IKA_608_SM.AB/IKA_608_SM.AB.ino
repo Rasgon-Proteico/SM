@@ -34,7 +34,7 @@ void  motores(int velA, int dirA, int velB, int dirB){
 
     digitalWrite(BIN1, dirB);
     digitalWrite(BIN2, !dirB); //Niega la velocidad derecha, si es HIGH lo pasa a LOW y viceversa
-    digitalWrite(PWM_A, velB);
+    digitalWrite(PWM_B, velB);
 }
 
 void loop() {
@@ -42,7 +42,7 @@ void loop() {
     float medida= distancia();
     Serial.print("Distancia:"); Serial.print(medida);Serial.print("cm");
     if(medida> 0 && medida < 30){
-      motores(150, HIGH, 150,  HIGH);
+      motores(150, LOW, 150,  LOW);
     } else { 
       motores(0, HIGH, 0, LOW);
     }
