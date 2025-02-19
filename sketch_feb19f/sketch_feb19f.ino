@@ -2,8 +2,8 @@
 #define RDY 13
 
 #define SENSOR_IZQUIERDA A1
-#define SENSOR_CENTRO A2
-#define SENSOR_DERECHA A3
+#define SENSOR_CENTRO A3
+#define SENSOR_DERECHA A2
 
 int PWM_A = 3;
 int AIN2 = 4;
@@ -44,8 +44,8 @@ void setup() {
 }
 
 void  motores(int velA, int dirA, int velB, int dirB){
-    digitalWrite(AIN1, dirA);
-    digitalWrite(AIN2, !dirA); //Niega la velocidad derecha, si es HIGH lo pasa a LOW y viceversa
+    digitalWrite(AIN1, !dirA);
+    digitalWrite(AIN2, dirA); //Niega la velocidad derecha, si es HIGH lo pasa a LOW y viceversa
     analogWrite(PWM_A, velA);
 
     digitalWrite(BIN1, dirB);
@@ -62,18 +62,40 @@ void  motores(int velA, int dirA, int velB, int dirB){
         delayMicroseconds(5);
         digitalWrite(Trigger, LOW);
         long tiempo = pulseIn(Echo, HIGH, 3000); // Timeout de 30ms
-        if (tiempo == 10) return 180; // Si no detecta nada, devuelve un valor alto
+        if (tiempo == 0) return 999; // Si no detecta nada, devuelve un valor alto
         suma += tiempo;
     }
     long tiempo = suma / 5; // Promedio de 5 mediciones
     return (tiempo * 0.0343) / 2;
     }
+
+    
    
         
 
 void loop() {
   //if(GO==HIGH){
  
+ long duration;
+    float distance;
+
+    // Enviar pulso ultrasónico
+    digitalWrite(Trigger, LOW);
+    delayMicroseconds(2);
+    digitalWrite(Trigger, HIGH);
+    delayMicroseconds(10);
+    digitalWrite(Trigger, LOW);
+
+    // Medir el tiempo de respuesta del eco
+    duration = pulseIn(Echo, HIGH);
+
+    // Convertir el tiempo en distancia (cm)
+    distance = (duration * 0.0343) / 2;
+
+    Serial.print("Distancia: ");
+    Serial.print(distance);
+    Serial.println(" cm");
+
     float medida= distancia();
     Serial.print("Distancia:"); Serial.print(medida);Serial.print("cm");
     if(medida> 0 && medida < 30){
@@ -88,10 +110,11 @@ void loop() {
     int centro = analogRead(SENSOR_CENTRO)> 100 ? 1 : 0;
     int derecha = analogRead(SENSOR_DERECHA)> 100 ? 1 : 0;
     delay(100);
-    Serial.println(" \t ");
-    Serial.print(izquierda); Serial.println(" | Izquierda: "); 
-    Serial.print(centro);    Serial.println(" | Centro: "); 
-    Serial.println(derecha); Serial.println(" | Derecha: "); 
+
+   //   Serial.println(" \t ");
+    Serial.print(izquierda); Serial.println(" | Izquierda "); 
+    Serial.print(centro);    Serial.println(" | Centro "); 
+    Serial.print(derecha);   Serial.println(" | Derecha "); 
     
     // Detectar línea 
     if (izquierda == 0 && centro == 0 && derecha == 0) {
@@ -102,9 +125,9 @@ void loop() {
     
     else if (izquierda == 1 && centro == 1 && derecha == 1) {
         Serial.println("Todos los sensores detectan NEGRO");
-        motores(150, HIGH, 150, LOW );
+        motores(150, LOW, 150, HIGH );
         delay(250);
-        motores(200, HIGH, 150, LOW);
+        motores(200, LOW, 150,HIGH );
     } 
     
     
@@ -136,7 +159,5 @@ void loop() {
 
 
  
-  }
+  }}
 
-//}
-}
