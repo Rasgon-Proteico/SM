@@ -53,7 +53,7 @@ void  motores(int velA, int dirA, int velB, int dirB){
     analogWrite(PWM_B, velB);
 }
 
-      /*float distancia(){ 
+      float distancia(){ 
        long suma = 0;
     for (int i = 0; i < 5; i++) {
         digitalWrite(Trigger, LOW);
@@ -67,7 +67,7 @@ void  motores(int velA, int dirA, int velB, int dirB){
     }
     long tiempo = suma / 5; // Promedio de 5 mediciones
     return (tiempo * 0.0343) / 2;
-    }*/
+    }
 
     
    
@@ -96,12 +96,12 @@ void loop() {
     Serial.print(distance);
     Serial.println(" cm");
 
-    /*float medida= distancia();
+    float medida= distancia();
     Serial.print("Distancia:"); Serial.print(medida);Serial.print("cm");
     if(medida> 0 && medida < 30){
       if(medida<15){
       motores(150, HIGH, 150,  HIGH);
-    } */
+    } 
 
     
     delay(20);
@@ -110,7 +110,8 @@ void loop() {
     int centro = analogRead(SENSOR_CENTRO)> 100 ? 1 : 0;
     int derecha = analogRead(SENSOR_DERECHA)> 100 ? 1 : 0;
     delay(100);
-    Serial.println(" \t ");
+
+   //   Serial.println(" \t ");
     Serial.print(izquierda); Serial.println(" | Izquierda "); 
     Serial.print(centro);    Serial.println(" | Centro "); 
     Serial.print(derecha);   Serial.println(" | Derecha "); 
@@ -124,9 +125,9 @@ void loop() {
     
     else if (izquierda == 1 && centro == 1 && derecha == 1) {
         Serial.println("Todos los sensores detectan NEGRO");
-        motores(150, LOW, 150,HIGH  );
+        motores(150, LOW, 150, HIGH );
         delay(250);
-        motores(200, LOW, 150, HIGH);
+        motores(200, LOW, 150,HIGH );
     } 
     
     
@@ -158,7 +159,5 @@ void loop() {
 
 
  
-  }
-
-
+  }}
 
