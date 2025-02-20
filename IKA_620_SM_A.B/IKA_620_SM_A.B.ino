@@ -67,17 +67,16 @@ void medir() {
     // Si la distancia es menor o igual a 49, el oponente está cerca y debe atacar
     Serial.println("/ Attack mode");
     motores(250, LOW, 250, HIGH);
-} else if (distance >=31) {
+} else if (distance > 31) {
     // Si la distancia es mayor a 50, el robot debe girar sobre su eje
     Serial.println("/ Searching");
     motores(220, LOW, 220, LOW); // Gira sobre su eje
-}
-
-    delay(200);
+delay(200);
+}    
 }
 
 void loop() {
-  if(digitalRead(RDY)==HIGH && digitalRead(GO)==LOW ){
+ if(digitalRead(RDY)==HIGH && digitalRead(GO)==LOW ){
 
     digitalWrite(PWM_A,0);
     digitalWrite(PWM_B,0);
@@ -117,11 +116,11 @@ if(digitalRead(GO)==HIGH){
         Serial.println("Línea detectada enfrente");
         motores(150, LOW, 150, LOW);*/
         medir();
-    
-    }}
-    delay(200);
-    }
+                  delay(200);
 
+       }
+     }
+   }
 
 
 
